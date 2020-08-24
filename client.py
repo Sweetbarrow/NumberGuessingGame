@@ -14,15 +14,15 @@ def register_nickname(server_socket):
     server_socket.send(nickname.encode('utf8'))
     print(server_socket.recv(4096).decode('utf8'))
     recv_nickname = server_socket.recv(4096).decode('utf8')
-    if nickname in recv_nickname:
+    if nickname == recv_nickname:
         return recv_nickname
 
 
 def challenge(server_socket):
     response = server_socket.recv(4096)
     answers = pickle.loads(response)
-    print(answers)
-    print(f"이번 라운드 내 숫자는 {answers[player_nickname]}입니다.")
+    my_number = answers[player_nickname]
+    print(f"이번 라운드 내 숫자는 {my_number}입니다.")
     my_turn = 0
     notice_output = 0
     response = server_socket.recv(4096).decode('utf8')
@@ -60,7 +60,8 @@ def challenge(server_socket):
             print("다른 사람들이 맞추지 못했습니다. 1점을 득점하였습니다. 턴이 종료되었습니다.")
             return
         else:
-            continue
+            import time
+            time.sleep(60)
 
 
 try:
